@@ -1,0 +1,408 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\input{common_preamble}
+\end_preamble
+\use_default_options true
+\begin_modules
+eqs-within-sections
+figs-within-sections
+tabs-within-sections
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Background Information
+\end_layout
+
+\begin_layout Section
+Colour Spaces
+\end_layout
+
+\begin_layout Standard
+The perception of colour in humans is currently explained by two complementary
+ theories.
+ The Young-Helmholtz, or trichromatic, theory states that we have photoreceptive
+ cells in our eyes that are sensitive to three wavelengths of the electromagneti
+c specturm.
+ These wavelengths roughly correspond to the colours red (
+\begin_inset Formula $\lambda=560nm$
+\end_inset
+
+), green (
+\begin_inset Formula $\lambda=530nm$
+\end_inset
+
+) and blue (
+\begin_inset Formula $\lambda=420nm$
+\end_inset
+
+) (CITE).
+ As one of the first validations of this theory, James Clark Maxwell took
+ the first permanent colour photograph in (YEAR) by using three separate
+ colour filters, namely red, gree and violet-blue, which when viewed together
+ in a dark room created the colour photograph (CITE).
+ This led to the notion of an additive colour space, known as the Red Green
+ Blue (RGB) colour space, in which every perceivable colour can be reproduced
+ by additively combining those three primary colours.
+ This can be visualized or represented by a 3-dimensional space as can be
+ seen in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:The-RGB-colour"
+
+\end_inset
+
+, where a vector of the three primary colours defines their contribution
+ to the desired colour.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/rgb1.png
+	lyxscale 30
+	width 5.5cm
+
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/bg_info/rgb2.png
+	lyxscale 30
+	width 5.5cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The RGB colour space.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-RGB-colour"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The trichromatic theory could explain the physical mechanisms of colour,
+ but it was noted that we never see reddish-green or blueish-yellow, and
+ the theory could not explain the supposedly negative colour afterimages
+ we perceive after overstimulation of the retina.
+ Ewald Hering created the opponent process theory which postulates that
+ colour perception is created by three opponent processes based on the primary
+ red, green and blue receptors (CITE).
+ These opponent process consist of opposing pairs of colours, namely white-black
+, red-green and blue-yellow.
+ The responses from each channel in a pair are antagonistic to each other,
+ which explains the inability to perceive reddish-green, it also explained
+ the negative afterimages, as an overstimulation of red would create an
+ afterimage of green, likewise overstimulation of blue would create an afterimag
+e of yellow.
+ It is thought that the overstimulation of one channel fatigues the neuronal
+ firing of that channel, and when the stimulus is removed the opposing channel's
+ signals are by comparison magnified (CITE?).
+\end_layout
+
+\begin_layout Standard
+The International Commission on Illumination (CIE)
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://www.cie.co.at/
+\end_layout
+
+\end_inset
+
+ was established in 1913, which is recognized by the International Organization
+ for Standardization (ISO) as an international standardization body dealing
+ with all matters relating to the science and art of light and lighting,
+ colour and vision, photobiology and image technology (CITE/FN?).
+ In 1931 the CIE formally defined the CIE 1931 XYZ colour space, commonly
+ reffered to as CIE XYZ, based on experiments by William David Wright and
+ John Guild, whose purpose was to encompass all the colour sensations an
+ average person can experience, and as such serves as a standard reference
+ against which many other colour spaces are defined.
+ CIE XYZ is a modified version of the RGB colour space due to results from
+ those experiments indicating that humans overstate the contribution of
+ green to the luminance or brightness of a colour, as well as some other
+ adjustments due to the differences in our subjective perception of colour.
+\end_layout
+
+\begin_layout Standard
+Although the CIE XYZ 
+\begin_inset Quotes eld
+\end_inset
+
+master
+\begin_inset Quotes erd
+\end_inset
+
+ space can represent every perceivable colour, it is not particularly perceptual
+ly uniform.
+ Perceptual uniformity means a change of the same amount in the colour space
+ should produce an equivalent perceptual change in the colour produced.
+ To overcome this shortfall, the CIE 
+\shape italic
+L*a*b*
+\shape default
+ (CIELAB) coloud space was defined, which is an opponent colour space with
+ 
+\series bold
+\shape italic
+L
+\series default
+\shape default
+ for lightness and 
+\series bold
+\shape italic
+a
+\series default
+\shape default
+ and 
+\series bold
+\shape italic
+b
+\series default
+\shape default
+ for the colour opponent dimensions of red-green and yellow-blue.
+ This was achieved via a nonlinear transform of the CIE XYZ colour space
+ based on psychophysical experiments conducted by (CITEMECITEME) in (YEAR),
+ as can be seen by the embedding of the RGB space in the CIELAB space in
+ 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:The-RGB-space"
+
+\end_inset
+
+.
+ The beauty of having a perceptually uniform colour space is that it allows
+ mathematical treatment fo the differences between colours that correlate
+ to our perception, via the simple Euclidean distance between colours.
+ It is this attractive property that the CIELAB colour space has become
+ the de facto standard for colour computations in the computer vision community
+ and is why it is chosen for the remainder of this thesis.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/cielab1.png
+	lyxscale 30
+	width 5.5cm
+
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/bg_info/cielab2.png
+	lyxscale 30
+	width 5.5cm
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+The RGB space embedded in CIE 
+\shape italic
+L*a*b*
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:The-RGB-space"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Histograms
+\end_layout
+
+\begin_layout Section
+Histogram Distances
+\end_layout
+
+\begin_layout Section
+Saliency
+\end_layout
+
+\begin_layout Section
+Scoring Saliency
+\end_layout
+
+\end_body
+\end_document
