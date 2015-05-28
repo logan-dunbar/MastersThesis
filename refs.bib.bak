@@ -38,18 +38,6 @@
   Url                      = {http://www.sciencedirect.com/science/article/pii/S0896627311007860}
 }
 
-@Article{bruce2009saliency,
-  Title                    = {Saliency, attention, and visual search: An information theoretic approach},
-  Author                   = {Bruce, Neil DB and Tsotsos, John K},
-  Journal                  = {Journal of vision},
-  Year                     = {2009},
-  Number                   = {3},
-  Pages                    = {5},
-  Volume                   = {9},
-
-  Publisher                = {Association for Research in Vision and Ophthalmology}
-}
-
 @InProceedings{cha2007comprehensive,
   Title                    = {Comprehensive Survey on Distance/Similarity Measures between Probability Density Functions},
   Author                   = {Cha, Sung-Hyuk},

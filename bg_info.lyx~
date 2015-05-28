@@ -5,6 +5,9 @@
 \textclass report
 \begin_preamble
 \input{common_preamble}
+
+\usepackage{comment}
+\includecomment{comment}
 \end_preamble
 \use_default_options true
 \begin_modules
@@ -76,7 +79,7 @@ tabs-within-sections
 \quotes_language english
 \papercolumns 1
 \papersides 1
-\paperpagestyle default
+\paperpagestyle fancy
 \tracking_changes false
 \output_changes false
 \html_math_output 0
@@ -124,16 +127,12 @@ c specturm.
  seen in 
 \begin_inset CommandInset ref
 LatexCommand formatted
-reference "fig:The-RGB-colour"
+reference "fig:rgb-colour-space"
 
 \end_inset
 
 , where a vector of the three primary colours defines their contribution
  to the desired colour.
-\end_layout
-
-\begin_layout Standard
-\noindent
 \begin_inset Float figure
 wide false
 sideways false
@@ -158,7 +157,7 @@ status open
 \begin_inset Graphics
 	filename figures/bg_info/rgb1.png
 	lyxscale 30
-	width 5.5cm
+	height 3.5cm
 
 \end_inset
 
@@ -170,7 +169,7 @@ status open
 \begin_inset Graphics
 	filename figures/bg_info/rgb2.png
 	lyxscale 30
-	width 5.5cm
+	height 3.5cm
 
 \end_inset
 
@@ -189,7 +188,7 @@ status open
 The RGB colour space.
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:The-RGB-colour"
+name "fig:rgb-colour-space"
 
 \end_inset
 
@@ -198,10 +197,6 @@ name "fig:The-RGB-colour"
 
 \end_inset
 
-
-\end_layout
-
-\begin_layout Plain Layout
 
 \end_layout
 
@@ -249,7 +244,7 @@ http://www.cie.co.at/
  reffered to as CIE XYZ, based on experiments by William David Wright and
  John Guild, whose purpose was to encompass all the colour sensations an
  average person can experience, and as such serves as a standard reference
- against which many other colour spaces are defined.
+ against which many other colour spaces are defined (CITE).
  CIE XYZ is a modified version of the RGB colour space due to results from
  those experiments indicating that humans overstate the contribution of
  green to the luminance or brightness of a colour, as well as some other
@@ -299,7 +294,7 @@ b
  
 \begin_inset CommandInset ref
 LatexCommand formatted
-reference "fig:The-RGB-space"
+reference "fig:rgb-in-lab-space"
 
 \end_inset
 
@@ -313,24 +308,35 @@ reference "fig:The-RGB-space"
 \end_layout
 
 \begin_layout Standard
-\noindent
+There are many colour spaces defined, each having properties which make
+ them attractive to the community that spurred their development.
+ For example, the Hue-Saturation-Value (HSV) and Hue-Saturation-Lightness
+ (HSL) colour spaces came about due to the difficulty of manipulating colours
+ in RGB.
+ To change the shade of red, one needs to update all three RGB values simultaneo
+usly, which can be tedious, unintuitive and error prone.
+ The HSV and HSL spaces rearrange the RGB space into cylindrical spaces,
+ hue being the angle around the color wheel, the radius being the saturation
+ of the specific hue, and the vertical axis being the lightness or brightness
+ of the colour.
+ Now changing the shade of red equates to adjusting its saturation or brightness
+ level, creating a much intuitive interface for graphical designers and
+ digital artists.
+ These spaces still suffer from the perceptual nonuniformity which makes
+ them imprecise and inaccurate to work with computationally.
+ (sRGB/TRANSITION)
+\end_layout
+
+\begin_layout Standard
+An image is made up of pixels, usually arranged in a rectangular grid, each
+ of which has an associated colour triplet most commonly stored in the RGB
+ or sRGB format.
+ An image can therefore be seen as a point cloud in the space of our choosing
+ which allows us to apply clustering techniques and data analysis techniques
+ to uncover hidden structures and manifolds in the image.
 \begin_inset Float figure
 wide false
 sideways false
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
 status open
 
 \begin_layout Plain Layout
@@ -338,7 +344,7 @@ status open
 \begin_inset Graphics
 	filename figures/bg_info/cielab1.png
 	lyxscale 30
-	width 5.5cm
+	height 3.5cm
 
 \end_inset
 
@@ -350,12 +356,7 @@ status open
 \begin_inset Graphics
 	filename figures/bg_info/cielab2.png
 	lyxscale 30
-	width 5.5cm
-
-\end_inset
-
-
-\end_layout
+	height 3.5cm
 
 \end_inset
 
@@ -371,7 +372,741 @@ The RGB space embedded in CIE
 L*a*b*
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:The-RGB-space"
+name "fig:rgb-in-lab-space"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Histograms
+\end_layout
+
+\begin_layout Standard
+Histograms have their origins in the 19th century, introduced by Karl Pearson
+ as a means for graphically representing frequency data.
+ As a mathematical tool, a histogram provides an estimate of a data distribution
+, usually a discrete approximation of a continuous variable, but can be
+ applied to discrete data equally as well.
+ It acts very much like a summary for data, uncovering structures in the
+ data as well as making computations tractable by approximating and condensing
+ the data (CITE).
+\end_layout
+
+\begin_layout Standard
+They made their first commercial appearance in the 1980's in database query
+ optimizers.
+ By estimating how many records would need to be read or written (I/O),
+ the query optimizer is able to reorder the query appropriately so as to
+ minimize data I/O thereby drastically reducing query execution.
+ They then made their way into image processing and computer vision, being
+ used to summarize the intensity information in an image allowing charaterizatio
+n of the content of the image, as well as allowing image enhancement by
+ histogram equalization.
+ Colour histograms characterize the image in all three of its colour channels
+ and add further disriminitory and summarization power.
+ Examples of each are shown in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:image-and-hists"
+
+\end_inset
+
+.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/tiger_bw.jpg
+	lyxscale 50
+	height 3.2cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Grayscale image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/tiger_bw_hist.png
+	lyxscale 20
+	height 3.2cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Intensity histogram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/tiger.jpg
+	lyxscale 50
+	height 3.2cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Colour image
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/tiger_clr_hist.png
+	lyxscale 20
+	height 3.2cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Colour histogram
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An image with its associated intensity and colour histograms.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:image-and-hists"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The most common and easy to implement histogram is the equi-width histogram.
+ For the 1-dimensional case, it is constructed by partitioning a region
+ of the data space into equal width partitions, called bins, and then counting
+ the number of data points that lie within each bin's edges.
+ There are two main variables when dealing with histograms, total number
+ of bins 
+\begin_inset Formula $n$
+\end_inset
+
+, and bin width 
+\begin_inset Formula $k$
+\end_inset
+
+.
+ In the equi-width histogram 
+\begin_inset Formula $n$
+\end_inset
+
+ and 
+\begin_inset Formula $k$
+\end_inset
+
+ are related by 
+\begin_inset Formula $k=\frac{upper-lower}{n}$
+\end_inset
+
+ where 
+\begin_inset Formula $upper$
+\end_inset
+
+ and 
+\begin_inset Formula $lower$
+\end_inset
+
+ are the upper and lower bounds of the histogram respectively.
+ Generally, one chooses 
+\begin_inset Formula $n$
+\end_inset
+
+ and then partitions the space over the maximum and minimum values in the
+ data, but it can be advantageous to keep a fixed range for the data, for
+ example binning over 
+\begin_inset Formula $0-255$
+\end_inset
+
+ for intensity histograms regardless of the image contents, so that one
+ may compare histogram bin values directly.
+ The formula for an equi-width histogram with a total of 
+\begin_inset Formula $m$
+\end_inset
+
+ data points is:
+\begin_inset Formula 
+\begin{equation}
+c_{b}=\sum_{j=1}^{m}\mathds{1}(x_{j}),
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $c_{b}$
+\end_inset
+
+ is the count of data points in bin number 
+\begin_inset Formula $b\in\{1,\ldots,n\}$
+\end_inset
+
+ and 
+\begin_inset Formula $\mathds{1}(x_{j})$
+\end_inset
+
+ is an indicator function equalling 
+\begin_inset Formula $1$
+\end_inset
+
+ when 
+\begin_inset Formula $x_{j}$
+\end_inset
+
+ is in bin 
+\begin_inset Formula $b$
+\end_inset
+
+ and 
+\begin_inset Formula $0$
+\end_inset
+
+ otherwise.
+ Histograms are often normalized to remove dependence on the sample size,
+ allowing different sample size distributions to be compared, resulting
+ in a relative frequency histogram.
+ The frequency 
+\begin_inset Formula $f_{b}$
+\end_inset
+
+ of bin 
+\begin_inset Formula $b$
+\end_inset
+
+ is calculated by:
+\begin_inset Formula 
+\begin{equation}
+f_{b}=\frac{c_{b}}{\sum_{i=1}^{n}c_{b}}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "piatetsky1984accurate"
+
+\end_inset
+
+ studied the histogram as applied to database query optimization, and showed
+ that according to the maximum estimation error the key parameter to control
+ in generating histograms is the depth and not the width.
+ They introduced the equi-depth histogram which takes the data and partitions
+ it into 
+\begin_inset Formula $n$
+\end_inset
+
+ equal depth
+\shape italic
+ distribution steps
+\shape default
+.
+ The process sorts the data using the natural ordering of the data domain
+ and splits them into equal sized steps.
+ The effect of this is to create narrower bins in high density regions,
+ and have wider bins at regions of lower density.
+ This makes intuitive sense if you are looking to characterize the 
+\begin_inset Quotes eld
+\end_inset
+
+crux
+\begin_inset Quotes erd
+\end_inset
+
+ of the data as you are paying more attention to more of the data but this
+ also has the adverse effect of smoothing out outliers.
+ This sort and step method works to make the bins exactly equi-depth, but
+ what it fails to account for is many values sitting on the bin edge that
+ would get split across the bins depending on what index the step happens
+ at.
+ In (CITE-Scott 92/15?) they instead take a percentile mesh on the data,
+ which doesn't create perfectly equi-depth bins, but it negates the edge
+ effects encountered from doing distribution steps.
+\end_layout
+
+\begin_layout Standard
+The equi-width and equi-depth histograms both have minor shortcomings: the
+ equi-width histogram does not handle spikes well, has greater estimation
+ error than the equi-width histogram, but it is able to better charaterize
+ outliers, whereas the equi-depth histogram gives greater detail to high
+ density regions while sacrificing resolution in the low density regions.
+ In 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "denby2009variations"
+
+\end_inset
+
+ the authors propose a compromise between the two methods, which they term
+ the diagonal histogram.
+ They use the empirical cumulative distribution function (ecdf) of the data
+ to create their histograms, noting that equally spaced partitions of the
+ domain of the ecdf equates to creating an equi-width histogram, and equally
+ spaced partitions of the ecdf range equates to the equi-depth histogram.
+ From this perspective, the shortcomings of each can be explained: at ranges
+ of high density the ecdf climbs sharply, which is masked by the equi-width
+ histogram and better partitioned by the equi-width histogram, whereas regions
+ of low density will result in a flatter ecdf, which is captured better
+ by the equi-width histogram and worse by the equi-depth histogram.
+ Their proposition is to take equally spaced diagonal partitions of the
+ ecdf, which will make a compromise between capturing high density regions,
+ thereby capturing spikes, as well as capturing low density regions thereby
+ capturing the outliers.
+\end_layout
+
+\begin_layout Section
+Histogram Distances
+\end_layout
+
+\begin_layout Standard
+Histograms, being estimates of data distributions, have distances which
+ can be calculated between two histograms, much like their continuous counterpar
+ts.
+ The distance, in effect, tells one how dissimilar two data distributions
+ are, based on the estimate garnered from the histogram.
+ There are two main types of histogram distances, the bin-to-bin type distances
+ and the cross-bin type distances.
+ For the following, let 
+\begin_inset Formula $P,Q\in\mathbb{R}^{n}$
+\end_inset
+
+be two vectors representing histgrograms with 
+\begin_inset Formula $n$
+\end_inset
+
+ bins.
+\end_layout
+
+\begin_layout Subsection
+Bin-to-bin distances
+\end_layout
+
+\begin_layout Standard
+A bin-to-bin type distance computes the distance between the histograms
+ in a bin-wise fashion.
+ This is usually fast to implement, but can suffer from binning-effects
+ or shifting of the histogram, due to a small shift or edge effect causing
+ the bins to completely miss one another, as in (FIGURE).
+ The most common bin-to-bin distances are of the Minkowsky-form based on
+ the 
+\begin_inset Formula $L_{p}$
+\end_inset
+
+norm: 
+\begin_inset Formula 
+\begin{equation}
+L_{p}(P,Q)=\left(\sum_{i}|P_{i}-Q_{i}|^{p}\right)^{\frac{1}{p}}
+\end{equation}
+
+\end_inset
+
+which is a metric for 
+\begin_inset Formula $p\geq1$
+\end_inset
+
+.
+ From this family we get the most widely used distances, the 
+\begin_inset Formula $L_{1}$
+\end_inset
+
+ or Manhatten distance, and the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ or Euclidean distance.
+ A related distance that can handle histograms of different sample sizes
+ is called the histogram intersection distance: 
+\begin_inset Formula 
+\begin{equation}
+\text{HI}(P,Q)=1-\frac{\sum_{i}\min(P_{i},Q_{i})}{\sum_{i}Q_{i}}
+\end{equation}
+
+\end_inset
+
+which is equivalent to the 
+\begin_inset Formula $L_{1}$
+\end_inset
+
+ distance when both histograms are normalized.
+\end_layout
+
+\begin_layout Standard
+The Kullback-Leibler (KL) divergence is an information theoretic distance
+ which measures how inefficient on average it would be to code samples from
+ 
+\begin_inset Formula $P$
+\end_inset
+
+ when using a code based on 
+\begin_inset Formula $Q$
+\end_inset
+
+: 
+\begin_inset Formula 
+\begin{equation}
+\text{KL}(P,Q)=\sum_{i}P_{i}\log\left(\frac{P_{i}}{Q_{i}}\right).
+\end{equation}
+
+\end_inset
+
+ The KL divergence is non-symmetric, sensitive to histogram binning and
+ equals infinity when 
+\begin_inset Formula $P\neq0$
+\end_inset
+
+ and 
+\begin_inset Formula $Q=0$
+\end_inset
+
+.
+ To overcome some of these problems the Jenson-Shannon (JS) divergence was
+ developed: 
+\begin_inset Formula 
+\begin{equation}
+\text{JS}(P,Q)=\text{KL}(P,M)+\text{KL}(Q,M)
+\end{equation}
+
+\end_inset
+
+ where 
+\begin_inset Formula 
+\[
+M=\frac{P+Q}{2}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From statistics we get the popular and effective 
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ distance: 
+\begin_inset Formula 
+\begin{equation}
+\chi^{2}=\sum_{i}\frac{(P_{i}-M_{i})^{2}}{M_{i}}
+\end{equation}
+
+\end_inset
+
+ which measures how unlikely it is that one distribution was drawn from
+ the population represented by the other, with 
+\begin_inset Formula $M$
+\end_inset
+
+ being the same as above.
+\end_layout
+
+\begin_layout Standard
+Another statistical distance, the Bhattacharyya distance, started as a geometric
+ similarity measuring the angle between two multinomial populations in a
+ 
+\begin_inset Formula $k$
+\end_inset
+
+-dimensional space, and was shown in 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "aherne1998bhattacharyya"
+
+\end_inset
+
+ that the Bhattacharyya coefficient could be derived to measure the similarity
+ between two normalized histograms: 
+\begin_inset Formula 
+\begin{equation}
+\text{BH}(P,Q)=\sum_{i}\sqrt{P_{i}Q_{i}}.
+\end{equation}
+
+\end_inset
+
+ It is shown in 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "aherne1998bhattacharyya"
+
+\end_inset
+
+ that the Bhattacharyya embeds the distance in a constant error space, which
+ ensures that the minimum distance between two points is always a straight
+ line measure between them, which negates the need of evaluating the minimum
+ of a curved path integral for Poisson like errors which one needs to do
+ with the 
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ distance.
+ It is also shown that the Bhattacharyya distance approximates the 
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ distance for small distances as well as avoids the singularity problem
+ of the 
+\begin_inset Formula $\chi^{2}$
+\end_inset
+
+ when comparing empty bins.
+\end_layout
+
+\begin_layout Subsection
+Cross-bin distances
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "rubner1999perceptual"
+
+\end_inset
+
+ provides an illuminating illustration of the shortcomings of bin-to-bin
+ distances.
+ In 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:rubner-example-1"
+
+\end_inset
+
+ shows that for the simple example of a shifted histogram the distances
+ produced do not match perception.
+ This is due to the fact that the distances assume that the histograms are
+ perfectly aligned, thereby making them very sensitive to contrast and lighting
+ changes in an image.
+ They are also unduly affected by binning effects (CITE) which happens when
+ the edge of a bin splits the data incorrectly, which then greatly affects
+ the bin-to-bin distance.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/hist_dist_1.svg
+	lyxscale 50
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Assuming normalized, 
+\begin_inset Formula $L_{1}(P_{1},Q_{1})=2$
+\end_inset
+
+, 
+\begin_inset Formula $L_{1}(P_{2},Q_{2})=1$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/hist_dist_2.svg
+	lyxscale 50
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distance should be based on correspondence between bins.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An example of where the 
+\begin_inset Formula $L_{1}$
+\end_inset
+
+ bin-to-bin distance does not match perception.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:rubner-example-1"
 
 \end_inset
 
@@ -392,20 +1127,607 @@ name "fig:The-RGB-space"
 
 \end_layout
 
-\begin_layout Section
-Histograms
+\begin_layout Standard
+Cross-bin distances attempt to overcome these shortcomings by taking into
+ account the intra-bin values, which allow a more robust comparison among
+ histograms.
+ The Quadratic-Form (QF) distance enlists a bin-similarity matrix 
+\begin_inset Formula $A\in\mathbb{R}^{n\times n}$
+\end_inset
+
+, with 
+\begin_inset Formula $a_{ij}$
+\end_inset
+
+ being a value indicating how similar bin 
+\begin_inset Formula $i$
+\end_inset
+
+ is to bin 
+\begin_inset Formula $j$
+\end_inset
+
+.
+ The QF distance is then defined as: 
+\begin_inset Formula 
+\begin{equation}
+\text{QF}(P,Q)=\sqrt{(P-Q)^{T}A(P-Q)}.
+\end{equation}
+
+\end_inset
+
+If 
+\begin_inset Formula $A$
+\end_inset
+
+ is chosen as the inverse of the covariance matrix, the distance reduces
+ to the Mahalanobis distance.
+ A common choice of 
+\begin_inset Formula $A$
+\end_inset
+
+ is to use the 
+\begin_inset Formula $L_{1}$
+\end_inset
+
+ or 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ distance between bins.
+ The QF essentially maps each bin in one histogram with every bin in the
+ other histogram, which overstates the mutual similarity for histgograms
+ without a pronounced mode, as can be seen in 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "fig:rubner-example-2"
+
+\end_inset
+
+ from the second example in 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "rubner1999perceptual"
+
+\end_inset
+
+.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/hist_dist_3.svg
+	lyxscale 50
+	width 5cm
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+QF overstates mutual similarity
 \end_layout
 
-\begin_layout Section
-Histogram Distances
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/bg_info/hist_dist_4.svg
+	lyxscale 50
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distance should be based on correspondence between bins.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+An example of where the QF distance does not match perception.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:rubner-example-2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Earth Mover's Distance (EMD) represents the distance as a transportation
+ problem, also known as Monge-Kantorovich amongst others.
+ It is a measure of how difficult it is to transform the smaller histogram
+ into part of the bigger histogram, while taking into account the distances
+ between between bins.
+ It does so by seeing the smaller histogram as piles of dirt in a space
+ endowed with a ground distance, which is defined as the amount of work
+ to move a unit of dirt from one location to another, and sees the bigger
+ histogram as holes in that same space.
+ The EMD is then the minimum amount of work to move all of the dirt into
+ the holes.
+ Formally: 
+\begin_inset Formula 
+\begin{align}
+EMD(P,Q) & =\min_{\{F_{ij}\}}\frac{\sum_{i,j}F_{ij}D_{ij}}{\min(\sum_{i}P_{i},\sum_{j}Q_{j})}\text{\quad s.t.}\\
+\sum_{j}F_{ij} & \leq P_{i},\nonumber \\
+\sum_{i}F_{ij} & \leq Q_{j},\nonumber \\
+\sum_{i,j}F_{ij} & =\min(\sum_{i}P_{i},\sum_{j}Q_{j}),\text{ and}\nonumber \\
+F_{ij} & \geq0.\nonumber 
+\end{align}
+
+\end_inset
+
+
+\begin_inset Formula $F_{ij}$
+\end_inset
+
+ is the optimal flow from 
+\begin_inset Formula $P_{i}$
+\end_inset
+
+ to 
+\begin_inset Formula $Q_{j}$
+\end_inset
+
+ and is computed using the linear programming algorithm, the transportation
+ simplex.
+ 
+\begin_inset Formula $D_{ij}$
+\end_inset
+
+ is the ground distance between bin 
+\begin_inset Formula $i$
+\end_inset
+
+ and bin 
+\begin_inset Formula $j$
+\end_inset
+
+, whihc most research takes as 
+\begin_inset Formula $L_{1}$
+\end_inset
+
+ distance between bins thanks to its computational properties (CITECITECITE),
+ but for this paper we will be using the 
+\begin_inset Formula $L_{2}$
+\end_inset
+
+ distance to make use of the perceptual uniformity of colour in the CIELAB
+ space, as explained earlier.
+\end_layout
+
+\begin_layout Standard
+The diffusion distance (K) 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ling2006diffusion"
+
+\end_inset
+
+ is similar to the EMD, but instead of a transportation problem, they model
+ the difference between histograms as a temperature field and relate the
+ distance to an integrated norm of the diffusion process.
+ For computational efficiency, a Gaussian pyramid is used to discretize
+ the continuous diffusion process, and the diffusion distance is then defined
+ as the sum of norms over all pyramid layers.
+ If 
+\begin_inset Formula $\mathbf{x}\in\mathbb{R}^{n}$
+\end_inset
+
+ represents a point in the underlying data space, then the diffusion distance
+ is defined as: 
+\begin_inset Formula 
+\begin{equation}
+K(P,Q)=\sum_{l=0}^{L}k(|d_{l}(\mathbf{x})|)\label{eq:diffusion-distance-full}
+\end{equation}
+
+\end_inset
+
+ where 
+\begin_inset Formula 
+\begin{align*}
+d_{0}(\mathbf{x}) & =P(\mathbf{x})-Q(\mathbf{x}),\text{ and}\\
+d_{l}(\mathbf{x}) & =[d_{l-1}(\mathbf{x})\ast\phi(\mathbf{x},\sigma)]\downarrow_{2}
+\end{align*}
+
+\end_inset
+
+are different layers of the pyramid, with 
+\begin_inset Formula $\downarrow_{2}$
+\end_inset
+
+ denoting half-sized downsampling, 
+\begin_inset Formula $L$
+\end_inset
+
+ being the number of layers, and 
+\begin_inset Formula $\phi$
+\end_inset
+
+ a Gaussian filter with standard deviation 
+\begin_inset Formula $\sigma$
+\end_inset
+
+.
+ The authors note that as long as 
+\begin_inset Formula $k(.)$
+\end_inset
+
+ is a metric, 
+\begin_inset Formula $K(P,Q)$
+\end_inset
+
+ also forms a metric on histograms.
+ They choose to use 
+\begin_inset Formula $L_{1}$
+\end_inset
+
+, reducing 
+\begin_inset CommandInset ref
+LatexCommand formatted
+reference "eq:diffusion-distance-full"
+
+\end_inset
+
+ to 
+\begin_inset Formula 
+\begin{equation}
+K(P,Q)=\sum_{l=0}^{L}|d_{l}(\mathbf{x})|.
+\end{equation}
+
+\end_inset
+
+Using the example from 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ling2006diffusion"
+
+\end_inset
+
+ in the style of 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "rubner1999perceptual"
+
+\end_inset
+
+ it can be seen in (FIGURE) that what would produce equal distances using
+ the EMD is slightly better handled perceptually by the diffusion distance.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 Saliency
 \end_layout
 
+\begin_layout Standard
+In understanding vision, Gestalt psychologists believe that the whole preceds
+ the part, that we register unitary objects and only later, if necessary,
+ do we analyze these objects further into components or properties.
+ A turning point came when Treisman and Gelade introduced the feature-integratio
+n theory of attention 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "treisman1980feature"
+
+\end_inset
+
+, which states that features are registered early, automatically, and in
+ parallel across the whole visual field, while objects are identified separately
+ and only at a later stage, requiring focused attention.
+ The physiological evidence (CITE) of specialized cells for features such
+ as orientation and motion, coupled with numerous behavioural experiments
+ give great weight to the validity of this theory.
+\end_layout
+
+\begin_layout Standard
+In a world as complex as this it makes intuitive sense to have levels of
+ processing.
+ It would be prohibitively expensive and computationally taxing to maintain
+ a complete representation of the entire world all at every instant.
+ Yet we still need to be able to identify potential predators, prey, mates,
+ and complete basic survival tasks.
+ One of nature's solutions to this challenge is the attentional mechanism
+ found in humans and many animals.
+ To quote William James 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "james1890principles"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Quote
+\begin_inset Quotes eld
+\end_inset
+
+Every one knows what attention is.
+ It is the taking possession by the mind, in clear and vivid form, of one
+ out of what seem several simultaneously possible objects or trains of thought...
+ It implies withdrawal from some things in order to deal effectively with
+ others.
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In other words, attention is the focus on one object or a small area of
+ interest to the exclusion of the rest.
+ This mechanism provides us with enough information to navigate our world
+ while allowing us to allocate our finite brain's limited energy and processing
+ power most effectively.
+ For this system to be successful it requires a mechanism for directing
+ the 
+\begin_inset Quotes eld
+\end_inset
+
+spotlight
+\begin_inset Quotes erd
+\end_inset
+
+ of attention, which in the case of vision is called visual saliency.
+\end_layout
+
+\begin_layout Standard
+Visual saliency is a measure of how much a certain stimulus in the visual
+ field stands out from its surrounds, or in other words how much it 
+\begin_inset Quotes eld
+\end_inset
+
+pops out
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Koch and Ullman proposed a theoretical foundation for the saliency map
+ and how it might be implemented in the primate brain 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "koch1985shifts"
+
+\end_inset
+
+.
+ A saliency map is a topographical map indicating the saliency of a location
+ in the visual field, formed by combining elements of individual feature
+ maps such as colour, edges, orientation and motion.
+\end_layout
+
+\begin_layout Standard
+The first computation implementation of a saliency maps was developed by
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "niebur1996control"
+
+\end_inset
+
+ and further extended by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "itti1998model"
+
+\end_inset
+
+.
+ Their model consisted of an input image, processed into a Gaussian pyramid
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "adelson1984pyramid"
+
+\end_inset
+
+, from which they compute intensity, colour, orientation and temporal change
+ features.
+ These features are linearly combined into a saliency map, having a greater
+ weight for the temporal change feature based on perceptual observation
+ of the authors.
+ They select the most salient location in the saliency map by means of a
+ winner-take-all process.
+ Interestingly, they also implement an inhibitory return signal, reasoning
+ that the saliency map does not just find the most salient region and then
+ stop, but rather it finds the most salient region, allows processing of
+ it, finds the next most salient, allows processing of it, etc.
+ To allow for this, the inhibitory signal coming from the winner-take-all
+ process adds a Mexican hat, or difference of Gaussians, to the location
+ where the signal originated.
+ This has the dual effect of inhibiting the most salient region, but also
+ slightly raising the saliency regions nearby, which might prevent the attention
+ jumping too rapidly or drastically around the scene.
+ For the interested reader, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "itti2001computational"
+
+\end_inset
+
+ provide a more thorough review of the biologically plausible saliency maps
+ and their computational counterparts.
+\end_layout
+
+\begin_layout Standard
+Not all saliency maps are biologically based.
+ Studies of the statistics of natural images show that there is an invariance
+ to scale in natural images 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "ruderman1994statistics"
+
+\end_inset
+
+.
+ The property is known as the 
+\begin_inset Formula $1/f$
+\end_inset
+
+ law and states that the amplitude 
+\begin_inset Formula $A(f)$
+\end_inset
+
+ of the averaged Fourier spectrum of an ensemble of natural images obeys
+ a distribution 
+\begin_inset Formula $\text{E}\{A(f)\}\propto1/f$
+\end_inset
+
+.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "hou2007saliency"
+
+\end_inset
+
+ show that the analysis of 2277 natural images revealed local linearity
+ in the log spectrum of the images, with each image containing a similar
+ trend with some statistical singularities.
+ They reason that if there is a similarity in the log spectra across a wide
+ variety of images, the information that deviates from these smooth curves
+ is what should be attended to.
+ They therefore apply a local averaged filter to the log spectrum to generate
+ the smooth trend curve, and compute the spectral residual of the image
+ as the difference between the local average spectrum and the image spectrum.
+ The authors claim that the spectral residual contains the innovation of
+ the image, and it is this innovation which is defined as being most salient.
+ Due to this being a statistical method based on the global Fourier transform
+ which works directly on image intensity values the results are not always
+ aligned with what is perceptually salient.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "li2013visual"
+
+\end_inset
+
+ explored this concept further and discovered that the spectral residual
+ is of little significance, and show that replacing it by random white noise
+ with the same average value and maximum as the spectral residual they are
+ able to achieve almost the same saliency map.
+ They deduced that the spectral residual, which can be approximated by a
+ horizontal plane, actually acts a high pass filter on the image, due to
+ the amplitude spectra of natural images having naturally higher amplitudes
+ at lower frequencies.
+ This is almost equivalent to a gradient enhancement operation, which is
+ why it discovers small salient objects but will only highlight the edges
+ and textured regions in an image.
+\end_layout
+
 \begin_layout Section
 Scoring Saliency
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Comment
+status open
+
+\begin_layout Plain Layout
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "refs"
+options "plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_body

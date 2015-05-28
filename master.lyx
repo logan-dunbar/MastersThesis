@@ -4,41 +4,7 @@
 \begin_header
 \textclass report
 \begin_preamble
-\usepackage{xcolor}
-%\usepackage{fancyhdr}
-
-   % don't make chapters and sections upper-case
-\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
-\renewcommand{\sectionmark}[1]{\markright{#1}{}}
-   % no lines
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-   % clear defaults
-\fancyhf{}
-   % set up font
-\newcommand{\headerfont}{\color[gray]{0.7}\fontfamily{phv}\fontsize{10}{11}\selectfont}
-\newcommand{\footerfont}{\fontfamily{phv}\fontsize{11}{11}\selectfont}
-   % header - right
-\renewcommand{\chaptermark}[1]{\markboth{\chaptername \ \thechapter: #1}{}}
-\lhead{\headerfont\leftmark}
-   % footer - center
-\fancyfoot[C]{\footerfont\thepage}
-
-   % remove redundant spaces from before chapter
-\usepackage{titlesec}
-\titleformat{\chapter}[hang]{\normalfont\huge\bfseries}{\thechapter.}{1em}{}
-\titlespacing{\chapter}{0pt}{0pt}{2em}
-
-
-\pagestyle{plain}
-
-\hypersetup{allcolors=black}
-
-\setlength{\textfloatsep}{\baselineskip}
-
-  % capitalize the Table and Figure refs
-\renewcommand{\tabref}{\Tabref}
-\renewcommand{\figref}{\Figref}
+\input{common_preamble}
 \end_preamble
 \use_default_options true
 \begin_modules
